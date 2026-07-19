@@ -1,0 +1,45 @@
+# =============================================================================
+# SentinelAI Backend Dependencies
+# Pin exact versions before the hackathon to avoid surprise breakage.
+# Install: pip install -r requirements.txt
+# =============================================================================
+
+# --- Web framework ---
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9       # file uploads (audio / image)
+pydantic==2.7.4
+pydantic-settings==2.3.4
+
+# --- HTTP clients ---
+httpx==0.27.0
+requests==2.32.3
+
+# --- AI orchestration ---
+langgraph==0.1.5
+langchain==0.2.6
+langchain-groq==0.1.5
+
+# --- Graph intelligence ---
+neo4j==5.22.0
+networkx==3.3                 # local fallback graph analytics
+
+# --- State / cache ---
+redis==5.0.7
+
+# --- Data store ---
+supabase==2.5.1
+
+# --- Media processing ---
+pillow==10.4.0                # image handling for counterfeit CV
+librosa==0.10.2               # audio feature extraction (optional)
+soundfile==0.12.1
+
+# --- Utils ---
+python-dotenv==1.0.1
+tenacity==8.4.2               # retry logic for external APIs
+loguru==0.7.2
+
+# --- Testing ---
+pytest==8.2.2
+pytest-asyncio==0.23.7
