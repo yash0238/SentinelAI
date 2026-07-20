@@ -1,4 +1,4 @@
-# Streamlit dashboard (alternative frontend)
+# SentinelAI Streamlit dashboard
 streamlit==1.36.0
 requests==2.32.3
 pandas==2.2.2
