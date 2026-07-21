@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import NetworkGraph from "@/components/NetworkGraph";
 import { getClusters } from "@/lib/api";
-import { Box, FileWarning, Fingerprint, MapPin, Smartphone, User, Link as LinkIcon, Download } from "lucide-react";
+import { Box, FileWarning, Fingerprint, MapPin, Smartphone, User, Link as LinkIcon, Download, Network } from "lucide-react";
 import { NODE_COLORS } from "@/lib/mock-data";
 
 export default function NetworkPage() {

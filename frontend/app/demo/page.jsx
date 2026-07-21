@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import VerdictCard from "@/components/VerdictCard";
 import { analyzeText, analyzeAudio, analyzeImage } from "@/lib/api";
-import { MessageSquare, Mic, Image as ImageIcon, Upload, Send } from "lucide-react";
+import { MessageSquare, Mic, Image as ImageIcon, Upload, Send, ShieldAlert } from "lucide-react";
 
 export default function DemoPage() {
   const [mode, setMode] = useState("text"); // "text", "audio", "image"
