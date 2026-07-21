@@ -1,17 +1,50 @@
-"""
-SentinelAI — Shared constants.
+# Shared constants
 
-Planned contents
-----------------
-- SCAM_SCRIPT_LABELS: candidate labels for zero-shot classification, e.g.
-  ["digital arrest / fake CBI-ED officer", "KYC update fraud",
-   "fake courier/parcel scam", "investment / trading scam",
-   "loan app extortion", "electricity bill disconnection", "legitimate"].
-- SUPPORTED_LANGUAGES: the 12 regional languages for the Citizen Shield.
-- RISK_THRESHOLDS: score cut-offs mapping to RiskLevel.
-- ALERT_RECIPIENTS: mock MHA / helpline routing config.
+SCAM_SCRIPT_LABELS = [
+    "digital arrest / fake CBI or ED officer",
+    "KYC / bank account update fraud",
+    "fake courier or parcel scam",
+    "investment or stock trading scam",
+    "loan app extortion",
+    "electricity bill disconnection scam",
+    "SIM swap / telecom fraud",
+    "legitimate / not a scam",
+]
 
-TODO
-----
-[ ] Fill in label lists and thresholds; tune during testing.
-"""
+SUPPORTED_LANGUAGES = [
+    "Hindi",
+    "English",
+    "Marathi",
+    "Tamil",
+    "Telugu",
+    "Bengali",
+    "Kannada",
+    "Gujarati",
+    "Malayalam",
+    "Odia",
+    "Punjabi",
+    "Assamese"
+]
+
+# Risk score thresholds mapping to RiskLevel enum
+RISK_THRESHOLDS = {
+    "CRITICAL": 85,
+    "HIGH": 65,
+    "MEDIUM": 40,
+    "LOW": 0
+}
+
+def get_risk_level(score: int) -> str:
+    if score >= RISK_THRESHOLDS["CRITICAL"]:
+        return "CRITICAL"
+    if score >= RISK_THRESHOLDS["HIGH"]:
+        return "HIGH"
+    if score >= RISK_THRESHOLDS["MEDIUM"]:
+        return "MEDIUM"
+    return "LOW"
+
+# Mock recipients for alerts
+ALERT_RECIPIENTS = {
+    "mha_nodal_officer": "mha.alerts@gov.in",
+    "cyber_helpline": "1930"
+}

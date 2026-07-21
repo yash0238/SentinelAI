@@ -1,21 +1,59 @@
-"""
-Service: Redis wrapper — active scam-call session state & chat memory.
+import json
+from app.config import settings
+from app.core.logging import logger
 
-Why
----
-During a live "digital arrest" demo the AI must remember the running context
-of a call (turns so far, accumulating risk score). Redis holds this ephemeral
-state keyed by session/user id with a short TTL.
+# Try importing redis
+try:
+    import redis.asyncio as redis
+    REDIS_AVAILABLE = True
+except ImportError:
+    REDIS_AVAILABLE = False
 
-Functions (planned)
--------------------
-- set_session(session_id, state, ttl)
-- get_session(session_id)
-- append_turn(session_id, turn)
-- clear_session(session_id)
+class RedisService:
+    def __init__(self):
+        self.url = settings.REDIS_URL
+        self.client = None
+        self.use_fallback = not REDIS_AVAILABLE or settings.DEMO_MODE_FALLBACK
+        self.mock_store = {} # In-memory fallback
 
-TODO
-----
-[ ] Implement using redis-py (async) with REDIS_URL from settings.
-[ ] JSON-serialise state; set a sensible TTL (e.g., 1 hour).
-"""
+    async def connect(self):
+        if self.use_fallback:
+            return
+        try:
+            self.client = redis.from_url(self.url)
+            await self.client.ping()
+        except Exception as e:
+            logger.warning(f"Redis connection failed, using in-memory fallback: {e}")
+            self.use_fallback = True
+
+    async def close(self):
+        if self.client:
+            await self.client.close()
+
+    async def set_session(self, session_id: str, state: dict, ttl: int = 3600):
+        if self.use_fallback:
+            self.mock_store[session_id] = state
+            return
+            
+        await self.client.set(session_id, json.dumps(state), ex=ttl)
+
+    async def get_session(self, session_id: str) -> dict:
+        if self.use_fallback:
+            return self.mock_store.get(session_id)
+            
+        data = await self.client.get(session_id)
+        return json.loads(data) if data else None
+
+    async def append_turn(self, session_id: str, turn: dict):
+        state = await self.get_session(session_id) or {"turns": []}
+        state["turns"] = state.get("turns", []) + [turn]
+        await self.set_session(session_id, state)
+
+    async def clear_session(self, session_id: str):
+        if self.use_fallback:
+            self.mock_store.pop(session_id, None)
+            return
+            
+        await self.client.delete(session_id)
+
+redis_service = RedisService()

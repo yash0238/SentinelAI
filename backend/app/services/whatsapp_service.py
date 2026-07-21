@@ -1,21 +1,43 @@
-"""
-Service: WhatsApp Cloud API wrapper (outbound + media download).
+import httpx
+from app.config import settings
+from app.core.logging import logger
 
-Functions (planned)
--------------------
-- send_message(to, text)         -> send a text reply.
-- send_template(to, template)    -> send an approved template message.
-- download_media(media_id)       -> fetch voice note / image bytes for
-                                    analysis by the AI services.
+class WhatsAppService:
+    def __init__(self):
+        self.token = settings.WHATSAPP_TOKEN
+        self.phone_number_id = settings.WHATSAPP_PHONE_NUMBER_ID
+        self.base_url = f"https://graph.facebook.com/v18.0/{self.phone_number_id}/messages"
+        self.is_enabled = bool(self.token and self.phone_number_id)
 
-Design notes
-------------
-- Uses WHATSAPP_TOKEN + WHATSAPP_PHONE_NUMBER_ID from settings.
-- Inbound handling lives in api/routes/whatsapp_webhook.py; this module only
-  handles the Graph API calls.
+    async def send_message(self, to_phone: str, message: str) -> bool:
+        """Send a plain text reply to a user."""
+        if not self.is_enabled and settings.DEMO_MODE_FALLBACK:
+            logger.info(f"[MOCK WA] Sent to {to_phone}: {message}")
+            return True
+            
+        if not self.is_enabled:
+            logger.warning("WhatsApp not configured")
+            return False
 
-TODO
-----
-[ ] Implement send_message via POST /{phone_number_id}/messages.
-[ ] Implement two-step media download (get URL, then fetch with token).
-"""
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json",
+        }
+        
+        payload = {
+            "messaging_product": "whatsapp",
+            "to": to_phone,
+            "type": "text",
+            "text": {"body": message}
+        }
+        
+        async with httpx.AsyncClient() as client:
+            try:
+                resp = await client.post(self.base_url, json=payload, headers=headers)
+                resp.raise_for_status()
+                return True
+            except httpx.HTTPError as e:
+                logger.error(f"WhatsApp API error: {e}")
+                return False
+
+whatsapp_service = WhatsAppService()
