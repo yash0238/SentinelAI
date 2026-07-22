@@ -88,14 +88,10 @@ SentinelAI/
 ├── .env.example                    # Env var template
 ├── .gitignore                      # Git ignore file
 │
-├── docs/                           # 📚 Documentation & Planning
-│   ├── GUIDELINE.md                #   Complete build & local run guide
-│   ├── ARCHITECTURE.md             #   System architecture & repository tree
-│   ├── HACKATHON_STRATEGY.md       #   Strategy guide
-│   ├── ROADMAP_24H.md              #   Execution roadmap
-│   ├── API_KEYS_SETUP.md           #   API credential setup guide
-│   ├── DEMO_SCRIPT.md              #   Live pitch & demo flow
-│   └── CONTRIBUTING.md             #   Team conventions
+├── docs/                           # 📚 Documentation & System Design
+│   ├── ARCHITECTURE.md             #   System architecture, data flow & repository tree
+│   ├── API_KEYS_SETUP.md           #   Complete API credential setup guide
+│   └── DEMO_SCRIPT.md              #   Live pitch & judge demo flow guide
 │
 ├── backend/                        # ⚙️ FastAPI Orchestrator (Python)
 │   ├── app/                        #   FastAPI app, LangGraph agents, external services
@@ -119,7 +115,7 @@ SentinelAI/
 
 ## 🚀 How to Run Locally (Demo)
 
-> Full step-by-step in [`docs/GUIDELINE.md`](docs/GUIDELINE.md).
+> Full step-by-step in [`docs/API_KEYS_SETUP.md`](docs/API_KEYS_SETUP.md).
 
 ```bash
 # 1. Clone
@@ -149,13 +145,9 @@ npm run dev
 
 | Document | Purpose |
 |----------|---------|
-| [GUIDELINE.md](docs/GUIDELINE.md) | Complete start-to-finish build guide |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design, data flow, architecture & repository tree |
-| [HACKATHON_STRATEGY.md](docs/HACKATHON_STRATEGY.md) | The "One Killer Feature" winning strategy |
-| [ROADMAP_24H.md](docs/ROADMAP_24H.md) | Hour-by-hour execution plan |
-| [API_KEYS_SETUP.md](docs/API_KEYS_SETUP.md) | Where and how to get every API key |
-| [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | The judge-facing pitch & live demo flow |
-| [CONTRIBUTING.md](docs/CONTRIBUTING.md) | Team workflow & conventions |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture, data flow, component diagrams & repository tree |
+| [API_KEYS_SETUP.md](docs/API_KEYS_SETUP.md) | Complete step-by-step API key setup guide (Groq, HF, MapTiler, Neo4j, Supabase) |
+| [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | The judge-facing pitch & live demo walkthrough |
 
 ---
 
