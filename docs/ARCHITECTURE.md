@@ -128,14 +128,10 @@ SentinelAI/
 ├── .env.example                    # Env var template
 ├── .gitignore                      # Ignores secrets, deps, media
 │
-├── docs/                           # 📚 All planning & guideline documents
-│   ├── GUIDELINE.md                #   Complete start-to-finish build guide
-│   ├── ARCHITECTURE.md             #   System design, data flow, diagrams
-│   ├── HACKATHON_STRATEGY.md       #   "One Killer Feature" winning strategy
-│   ├── ROADMAP_24H.md              #   Hour-by-hour execution plan
-│   ├── API_KEYS_SETUP.md           #   How/where to get every API key
-│   ├── DEMO_SCRIPT.md              #   Judge-facing pitch + live demo flow
-│   └── CONTRIBUTING.md             #   Team workflow & conventions
+├── docs/                           # 📚 Documentation & System Design
+│   ├── ARCHITECTURE.md             #   System architecture, data flow & repository tree
+│   ├── API_KEYS_SETUP.md           #   Complete API credential setup guide
+│   └── DEMO_SCRIPT.md              #   Live pitch & judge demo flow guide
 │
 ├── backend/                        # ⚙️ FastAPI orchestrator (the brain)
 │   ├── app/
