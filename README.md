@@ -83,17 +83,37 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full system design an
 
 ```
 SentinelAI/
-├── README.md                  # You are here
-├── docs/                      # All planning & guideline documents
-├── backend/                   # FastAPI orchestrator + AI agents
-├── frontend/                  # Next.js law-enforcement dashboard
-├── whatsapp-bot/              # WhatsApp Cloud API citizen interface
-├── ml/                        # Model wrappers, notebooks, sample data
-├── infra/                     # Deployment configs (Render/Railway/Supabase)
-└── scripts/                   # Setup & seed scripts
+├── README.md                       # Project overview, features, quick start
+├── LICENSE                         # MIT License
+├── .env.example                    # Env var template
+├── .gitignore                      # Git ignore file
+│
+├── docs/                           # 📚 Documentation & Planning
+│   ├── GUIDELINE.md                #   Complete build & local run guide
+│   ├── ARCHITECTURE.md             #   System architecture & repository tree
+│   ├── HACKATHON_STRATEGY.md       #   Strategy guide
+│   ├── ROADMAP_24H.md              #   Execution roadmap
+│   ├── API_KEYS_SETUP.md           #   API credential setup guide
+│   ├── DEMO_SCRIPT.md              #   Live pitch & demo flow
+│   └── CONTRIBUTING.md             #   Team conventions
+│
+├── backend/                        # ⚙️ FastAPI Orchestrator (Python)
+│   ├── app/                        #   FastAPI app, LangGraph agents, external services
+│   ├── scripts/                    #   Database seed tools (seed_reports.py, seed_graph.py)
+│   ├── requirements.txt            #   Backend Python dependencies
+│   └── Dockerfile                  #   Container setup
+│
+├── frontend/                       # 🖥️ Law-Enforcement Dashboard (Next.js 14)
+│   ├── app/                        #   App Router (Hotspots, Network Graph, Reports)
+│   ├── components/                 #   HotspotMap (MapLibre GL), StatCards, Charts
+│   └── package.json                #   Frontend dependencies
+│
+├── frontend-streamlit/             # 🖥️ Streamlit Dashboard (Alternative UI)
+├── whatsapp-bot/                   # 💬 WhatsApp Cloud API setup & templates
+├── ml/                             # 🤖 Model cards & sample datasets
+├── infra/                          # 🚀 Deployment configurations (Render/Vercel)
+└── scripts/                        # 🛠️ Maintenance & verification scripts
 ```
-
-See [`docs/PROJECT_STRUCTURE.md`](docs/PROJECT_STRUCTURE.md) for a fully annotated tree.
 
 ---
 
@@ -130,12 +150,11 @@ npm run dev
 | Document | Purpose |
 |----------|---------|
 | [GUIDELINE.md](docs/GUIDELINE.md) | Complete start-to-finish build guide |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design, data flow, component diagrams |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design, data flow, architecture & repository tree |
 | [HACKATHON_STRATEGY.md](docs/HACKATHON_STRATEGY.md) | The "One Killer Feature" winning strategy |
 | [ROADMAP_24H.md](docs/ROADMAP_24H.md) | Hour-by-hour execution plan |
 | [API_KEYS_SETUP.md](docs/API_KEYS_SETUP.md) | Where and how to get every API key |
 | [DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) | The judge-facing pitch & live demo flow |
-| [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) | Annotated folder tree |
 | [CONTRIBUTING.md](docs/CONTRIBUTING.md) | Team workflow & conventions |
 
 ---
