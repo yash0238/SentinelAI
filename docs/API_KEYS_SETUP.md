@@ -83,12 +83,13 @@ Short version:
 - The test token expires in ~24h; generate a permanent **system-user** token
   for multi-day events.
 
-## 8. Mapbox (dashboard hotspot map)
-1. https://account.mapbox.com → copy your **default public token**.
+## 8. MapTiler / Mapbox (dashboard hotspot map)
+1. Sign up at https://maptiler.com for a 100% free API key (no credit card required) OR use https://account.mapbox.com.
 2. Set (frontend `.env.local`):
    ```
-   NEXT_PUBLIC_MAPBOX_TOKEN=pk...
+   NEXT_PUBLIC_MAPBOX_TOKEN=your_maptiler_key_or_mapbox_token
    ```
+3. Powered by **MapLibre GL JS** + **MapTiler / CARTO Dark Matter** vector & raster tiles for reliable, high-contrast dark map styling without telemetry or 401 errors.
 
 ## 9. Deployment (Render + Vercel)
 - **Render:** https://render.com — connect GitHub, add env vars in dashboard.
