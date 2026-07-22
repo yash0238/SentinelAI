@@ -15,7 +15,7 @@ CITIES = [
     {"name": "Chennai", "lat": 13.0827, "lng": 80.2707},
 ]
 
-async def seed_reports(count=50):
+async def seed_reports(count=50): 
     supabase_service.connect()
     
     if supabase_service.use_fallback:
