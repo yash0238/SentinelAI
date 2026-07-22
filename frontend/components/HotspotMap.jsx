@@ -2,13 +2,37 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Map, { Source, Layer, NavigationControl } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import { RISK_COLORS } from "@/lib/mock-data";
 
-/**
- * HotspotMap — Mapbox GL map of active digital arrests.
- * If NEXT_PUBLIC_MAPBOX_TOKEN is missing, renders a CSS-only fallback map.
- */
+// CARTO Dark Matter fallback map style (100% free open tiles)
+const CARTO_DARK_STYLE = {
+  version: 8,
+  sources: {
+    "carto-dark": {
+      type: "raster",
+      tiles: [
+        "https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+        "https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+        "https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+        "https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png",
+      ],
+      tileSize: 256,
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+    },
+  },
+  layers: [
+    {
+      id: "carto-dark-layer",
+      type: "raster",
+      source: "carto-dark",
+      minzoom: 0,
+      maxzoom: 22,
+    },
+  ],
+};
+
 export default function HotspotMap({ hotspots }) {
   const [mounted, setMounted] = useState(false);
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -17,7 +41,7 @@ export default function HotspotMap({ hotspots }) {
     setMounted(true);
   }, []);
 
-  // Format data for Mapbox GeoJSON source
+  // Format data for GeoJSON source
   const geojson = useMemo(() => {
     if (!hotspots) return null;
     return {
@@ -28,7 +52,6 @@ export default function HotspotMap({ hotspots }) {
           city: h.city,
           count: h.count,
           risk: h.risk,
-          // Used by Mapbox expressions for coloring
           color: RISK_COLORS[h.risk] || RISK_COLORS.LOW,
         },
         geometry: {
@@ -41,44 +64,6 @@ export default function HotspotMap({ hotspots }) {
 
   if (!mounted) return <div className="w-full h-full bg-base-800 rounded-xl" />;
 
-  // Mapbox missing fallback
-  if (!token) {
-    return (
-      <div className="w-full h-full bg-base-700 rounded-xl border border-base-400 flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-16 h-16 rounded-full bg-base-600 flex items-center justify-center mb-4">
-          <span className="text-2xl">🗺️</span>
-        </div>
-        <p className="text-slate-300 font-medium mb-1">
-          Mapbox Token Required
-        </p>
-        <p className="text-sm text-slate-500 max-w-sm">
-          To see the interactive map, add <code>NEXT_PUBLIC_MAPBOX_TOKEN</code> to your <code>.env.local</code> file and restart the server.
-        </p>
-        
-        {/* Simple CSS visualization of the data */}
-        <div className="mt-6 w-full max-w-md bg-base-800 rounded-lg p-4 border border-base-400 text-left">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
-            Hotspots Data Preview
-          </p>
-          <div className="space-y-2">
-            {hotspots?.slice(0, 5).map((h) => (
-              <div key={h.city} className="flex items-center justify-between">
-                <span className="text-sm text-slate-300">{h.city}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-slate-400">{h.count} reports</span>
-                  <span 
-                    className="w-2.5 h-2.5 rounded-full" 
-                    style={{ backgroundColor: RISK_COLORS[h.risk] }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const layerStyle = {
     id: "hotspots-layer",
     type: "circle",
@@ -87,27 +72,32 @@ export default function HotspotMap({ hotspots }) {
         "interpolate",
         ["linear"],
         ["get", "count"],
-        10, 8,
-        150, 24,
+        10, 10,
+        150, 26,
       ],
       "circle-color": ["get", "color"],
-      "circle-opacity": 0.6,
-      "circle-stroke-width": 1,
-      "circle-stroke-color": ["get", "color"],
+      "circle-opacity": 0.8,
+      "circle-stroke-width": 2,
+      "circle-stroke-color": "#ffffff",
     },
   };
+
+  // MapTiler dark style URL or CARTO dark fallback
+  const mapStyle = token
+    ? `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${token}`
+    : CARTO_DARK_STYLE;
 
   return (
     <div className="w-full h-full rounded-xl overflow-hidden border border-base-400 relative">
       <Map
+        mapLib={maplibregl}
         initialViewState={{
-          longitude: 79.0,
-          latitude: 22.0,
-          zoom: 3.5,
-          pitch: 25,
+          longitude: 78.9629,
+          latitude: 20.5937,
+          zoom: 4.2,
         }}
-        mapStyle="mapbox://styles/mapbox/dark-v11"
-        mapboxAccessToken={token}
+        mapStyle={mapStyle}
+        reuseMaps
       >
         <NavigationControl position="bottom-right" />
         {geojson && (
@@ -116,15 +106,15 @@ export default function HotspotMap({ hotspots }) {
           </Source>
         )}
       </Map>
-      
+
       {/* Legend overlaid on map */}
-      <div className="absolute top-4 left-4 glass-card px-3 py-2 border border-base-400/50">
+      <div className="absolute top-4 left-4 glass-card px-3 py-2 border border-base-400/50 z-10">
         <p className="text-[0.65rem] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Risk Level</p>
         <div className="space-y-1">
           {Object.entries(RISK_COLORS).map(([risk, color]) => (
             <div key={risk} className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-              <span className="text-xs text-slate-300">{risk}</span>
+              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
+              <span className="text-xs text-slate-300 font-medium">{risk}</span>
             </div>
           ))}
         </div>
