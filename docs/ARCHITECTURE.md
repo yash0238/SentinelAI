@@ -117,3 +117,45 @@ See [`../infra/DEPLOYMENT.md`](../infra/DEPLOYMENT.md).
 - Fine-tuned counterfeit-currency model with microprint/security-thread heads.
 - Geospatial patrol optimisation ML on hotspot clusters.
 - Automated, verified MHA/NCRB alert integration.
+
+## 8. Annotated Repository Structure
+
+```
+SentinelAI/
+│
+├── README.md                       # Project overview, features, quick start
+├── LICENSE                         # MIT
+├── .env.example                    # Env var template
+├── .gitignore                      # Ignores secrets, deps, media
+│
+├── docs/                           # 📚 All planning & guideline documents
+│   ├── GUIDELINE.md                #   Complete start-to-finish build guide
+│   ├── ARCHITECTURE.md             #   System design, data flow, diagrams
+│   ├── HACKATHON_STRATEGY.md       #   "One Killer Feature" winning strategy
+│   ├── ROADMAP_24H.md              #   Hour-by-hour execution plan
+│   ├── API_KEYS_SETUP.md           #   How/where to get every API key
+│   ├── DEMO_SCRIPT.md              #   Judge-facing pitch + live demo flow
+│   └── CONTRIBUTING.md             #   Team workflow & conventions
+│
+├── backend/                        # ⚙️ FastAPI orchestrator (the brain)
+│   ├── app/
+│   │   ├── main.py                 #   App entry: routers, CORS, /health
+│   │   ├── config.py               #   Typed settings from .env
+│   │   ├── api/routes/             #   Thin HTTP controllers
+│   │   ├── agents/                 #   LangGraph orchestration
+│   │   ├── services/               #   External API & DB wrappers
+│   │   ├── models/                 #   Pydantic request/response schemas
+│   │   └── core/                   #   Logging, security, constants & fallbacks
+│   └── scripts/                    #   Database seed tools
+│
+├── frontend/                       # 🖥️ Next.js law-enforcement dashboard
+│   ├── app/                        #   Dashboard routes (Hotspots, Network, Reports)
+│   ├── components/                 #   HotspotMap (MapLibre GL), StatCards, Charts
+│   └── lib/                        #   Fetch helpers to backend
+│
+├── frontend-streamlit/             # 🖥️ Streamlit dashboard (Alternative UI)
+├── whatsapp-bot/                   # 💬 Citizen interface (config + copy)
+├── ml/                             # 🤖 Model cards, zero-shot labels, sample data
+├── infra/                          # 🚀 Deployment blueprints
+└── scripts/                        # 🛠️ Maintenance & health-check scripts
+```
