@@ -65,6 +65,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full system design an
 | Counterfeit Currency Vision | ViT (google/vit-base-patch16-224) | Custom fine-tune |
 | Graph Intelligence | Neo4j | NetworkX (local fallback) |
 | Agent Orchestration | LangGraph | LangChain |
+| Geospatial Mapping | MapTiler / MapLibre GL JS | CARTO Dark Matter (local fallback) |
 
 ---
 
